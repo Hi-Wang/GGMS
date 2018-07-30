@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "iview": "^3.0.0",
+    "element-ui": "^2.4.5",
     "jsonp": "^0.2.1",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.6",
