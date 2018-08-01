@@ -1,121 +1,119 @@
 'use strict'
-const path = require('path')
-const utils = require('./utils')
 const webpack = require('webpack')
-const config = require('../config')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
+const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin') // npm i --save-dev html-webpack-plugin@next
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// 一个优化'压缩CSS的WebPack插件
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-const env = require('../config/prod.env')
+const utils = require('./utils')
+const config = require('./config')
+const baseWebpackConfig = require('./webpack.base.conf')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
-  module: {
-    rules: utils.styleLoaders({
-      sourceMap: config.build.productionSourceMap,
-      extract: true,
-      usePostCSS: true
-    })
-  },
-  devtool: config.build.productionSourceMap ? config.build.devtool : false,
+  mode: 'production',
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+  },
+  module: {
+    rules: [
+      // 它会应用到普通的 `.css` 文件
+      // 以及 `.vue` 文件中的 `<style>` 块
+      {
+        test: /\.s?css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: false
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: false
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  // 此选项控制是否以及如何生成source-map。cheap-module-eval-source-map is faster for development
+  devtool: config.build.devtool,
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        parallel: true,
+        sourceMap: false,
+        cache: true
+      }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: { safe: true, map: config.build.productionSourceMap }
+      })
+    ]
   },
   plugins: [
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': env
+    // css 提取
+    new MiniCssExtractPlugin({
+      filename: utils.assetsPath('css/[name].[hash].css'),
+      chunkFilename: 'static/css/[name].[hash].css',
+      sourceMap: false
     }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
-    }),
-    // extract css into its own file
-    new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
-      // Setting the following option to `false` will not extract CSS from codesplit chunks.
-      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
-      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
-    }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
-    new OptimizeCSSPlugin({
-      cssProcessorOptions: config.build.productionSourceMap
-        ? { safe: true, map: { inline: false } }
-        : { safe: true }
-    }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
+    // DLL
+    // new webpack.DllReferencePlugin({
+    //   manifest: require('../dll/vue-manifest.json')
+    // }),
+    // new webpack.DllReferencePlugin({
+    //   manifest: require('../dll/ui-manifest.json')
+    // }),
+    // html模板打包
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
-      inject: true,
+      template: resolve('index.html'),
+      inject: true, // 允许注入打包文件
       minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+        removeComments: true, // 删除注释
+        collapseWhitespace: true, // 折叠空白区域
+        removeAttributeQuotes: true // 尽可能删除属性周围的引号
       },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency' // 允许控制chunk的排序在插入到HTML之前
     }),
-    // keep module.id stable when vendor modules does not change
+    // 该插件会根据模块的相对路径生成一个四位数的hash作为模块id, 建议用于生产环境。
     new webpack.HashedModuleIdsPlugin(),
-    // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks (module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
+    // 插入到html
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, '../dll/*.dll.js'),
+      publicPath: config.build.assetsPublicPath + 'static/js',
+      outputPath: '../dist/static/js'
     }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      minChunks: Infinity
-    }),
-    // This instance extracts shared chunks from code splitted chunks and bundles them
-    // in a separate chunk, similar to the vendor chunk
-    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      async: 'vendor-async',
-      children: true,
-      minChunks: 3
-    }),
-
-    // copy custom static assets
+    // 复制静态文件
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
+        to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    // 打包进度
+    new webpack.ProgressPlugin(true)
   ]
 })
 

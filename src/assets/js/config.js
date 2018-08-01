@@ -5,16 +5,15 @@
 /**
  * 请求地址
  **/ 
-const BASE_URL = "https://api.logoliqp.com";//测试本地服
+export const BASE_URL = "https://api.logoliqp.com";//测试本地服
 // var BASE_URL = "https://api.xiudian.com";//正式服
 
 
 /**
  * 请求路径
  **/
-const api = {
+export const API = {
 
     // 用户登录
-    API_LOGIN : BASE_URL + '/login',
-
+    API_LOGIN :  '/login',
 }
