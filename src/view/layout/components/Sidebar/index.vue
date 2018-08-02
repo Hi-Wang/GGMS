@@ -20,6 +20,9 @@ import SidebarItem from './SidebarItem'
 
 export default {
   components: { SidebarItem },
+  created(){
+    console.log(this.permission_routers)
+  },
   computed: {
     ...mapGetters([
       'permission_routers',

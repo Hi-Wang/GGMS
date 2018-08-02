@@ -4,45 +4,44 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">{{$t('login.title')}}</h3>
-        <lang-select class="set-language"></lang-select>
+        <h3 class="title">系统登录</h3>
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
+          <i class="iconfont icon-shuruxingming"></i>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')"
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"
         />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <i class="iconfont icon-shuruxinmima"></i>
         </span>
         <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          :placeholder="$t('login.password')" />
+          placeholder="密码" />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
+          <i class="iconfont icon-see"></i>
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
-        <span>{{$t('login.username')}} : admin</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
+        <span>账号 : admin</span>
+        <span>密码 : 随便填</span>
       </div>
       <div class="tips">
-        <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
+        <span style="margin-right:18px;">账号 : editor</span>
+        <span>密码 : 随便填</span>
       </div>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>
     </el-form>
 
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
-      {{$t('login.thirdpartyTips')}}
+    <el-dialog title="第三方登录" :visible.sync="showDialog" append-to-body>
+      本地不能模拟，请结合自己业务进行模拟！！！
       <br/>
       <br/>
       <br/>
@@ -54,12 +53,12 @@
 
 <script>
 import { isvalidUsername } from 'assets/js/common'
-// import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
+import SvgIcon from 'components/SvgIcon'
 
 export default {
   components: { 
-    // LangSelect, 
+    SvgIcon,
     SocialSign
     },
   name: 'login',
@@ -117,29 +116,11 @@ export default {
       })
     },
     afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
   }
 }
 </script>

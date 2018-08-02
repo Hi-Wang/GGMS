@@ -31,7 +31,9 @@ module.exports = {
       'base': resolve('src/base'),
       'api': resolve('src/api'),
       'view': resolve('src/view'),
-      'store': resolve('src/store')
+      'store': resolve('src/store'),
+      'directive': resolve('src/directive'),
+      'utils': resolve('src/utils')
     }
   },
   module: {
@@ -83,10 +85,30 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        include: [resolve('assets/icons')],
+        options: {
+          symbolId: 'icon-[name]'
+        }
+      },
     ]
   },
   plugins: [
     new VueLoaderPlugin()
-  ]
+  ],
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
+  }
 };

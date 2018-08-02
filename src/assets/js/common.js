@@ -1,7 +1,7 @@
 /**
  * 公用的方法
  */
-import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 import { MessageBox, Message } from 'element-ui' 
 
 const TokenKey = 'Admin-Token'
@@ -181,6 +181,7 @@ const	getCookie = ( name ) =>{
     const valid_map = ['admin', 'editor']
     return valid_map.indexOf(str.trim()) >= 0
   }
+
   
 
   export {
