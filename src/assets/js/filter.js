@@ -1,5 +1,5 @@
 // set function parseTime,formatTime to filter
-export { parseTime, formatTime } from '@/utils'
+export { parseTime, formatTime } from 'assets/js'
 
 function pluralize(time, label) {
   if (time === 1) {

@@ -7,8 +7,9 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: Cookies.get('language') || 'en'
+    language: Cookies.get('language') || '中文'
   },
+  
   mutations: {
     TOGGLE_SIDEBAR: state => {
       if (state.sidebar.opened) {

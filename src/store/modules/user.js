@@ -16,7 +16,7 @@ const user = {
     }
   },
 
-  mutations: {
+  mutations: {  //更改vuex的store中数据状态的唯一方法是提交mutation，mutation类似于一个事件，但不可直接调用
     SET_CODE: (state, code) => {
       state.code = code
     },
@@ -42,15 +42,16 @@ const user = {
       state.roles = roles
     }
   },
-
+  
+  //actions：类似于Mutations，不同是的actions提交的是Mutations不是直接改变状态，action可以包含任意异步操作
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      const username = userInfo.username.trim() //顺便去一下空格
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
-          commit('SET_TOKEN', data.token)
+          commit('SET_TOKEN', data.token)  //调用commit， 更改mutation中state的值
           setToken(response.data.token)
           resolve()
         }).catch(error => {
@@ -83,20 +84,6 @@ const user = {
         })
       })
     },
-
-    // 第三方验证登录
-    // LoginByThirdparty({ commit, state }, code) {
-    //   return new Promise((resolve, reject) => {
-    //     commit('SET_CODE', code)
-    //     loginByThirdparty(state.status, state.email, state.code).then(response => {
-    //       commit('SET_TOKEN', response.data.token)
-    //       setToken(response.data.token)
-    //       resolve()
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
 
     // 登出
     LogOut({ commit, state }) {

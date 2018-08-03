@@ -2,64 +2,44 @@
   <div class="login-container">
 
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-
       <div class="title-container">
-        <h3 class="title">系统登录</h3>
+        <img src="../../assets/image/login/logo.jpg" alt="">
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <i class="iconfont icon-shuruxingming"></i>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"
-        />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"/>
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <i class="iconfont icon-shuruxinmima"></i>
         </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="密码" />
+        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
         <span class="show-pwd" @click="showPwd">
           <i class="iconfont icon-see"></i>
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-
-      <div class="tips">
-        <span>账号 : admin</span>
-        <span>密码 : 随便填</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">账号 : editor</span>
-        <span>密码 : 随便填</span>
-      </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>
+      <el-button type="primary" class="LoginBtn" :loading="loading" @click.native.prevent="handleLogin">提交</el-button>
     </el-form>
-
-    <el-dialog title="第三方登录" :visible.sync="showDialog" append-to-body>
-      本地不能模拟，请结合自己业务进行模拟！！！
-      <br/>
-      <br/>
-      <br/>
-      <social-sign />
-    </el-dialog>
 
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from 'assets/js/common'
-import SocialSign from './socialsignin'
 import SvgIcon from 'components/SvgIcon'
+import { mapGetters, mapMutations } from 'vuex'
+
+// ...mapMutations([]) 可以在组件中提交Mutaitions
+// ...mapActions([]) 可以在组件中分发actions
 
 export default {
   components: { 
-    SvgIcon,
-    SocialSign
+    SvgIcon
     },
   name: 'login',
   data() {
@@ -72,7 +52,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码必须6位数以上'))
       } else {
         callback()
       }
@@ -88,7 +68,6 @@ export default {
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false
     }
   },
   methods: {
@@ -103,6 +82,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          //actions 通过store.dispatch方法触发
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
@@ -118,7 +98,14 @@ export default {
     afterQRScan() {
     }
   },
+  computed: {
+    ...mapGetters({
+      Lang: 'language' //可以给getter去别的名字
+    })
+  },
   created() {
+    console.log(this.Lang)
+    console.log(this.$store.state.token)  //访问状态值
   },
   destroyed() {
   }
@@ -129,66 +116,77 @@ export default {
   /* 修复input 背景不协调 和光标变色 */
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
  
-  $bg:#283443;
+  $bg:#fff;
   $light_gray:#eee;
   $cursor: #fff;
+  $font-color: #000;
 
   @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
     .login-container .el-input input{
-      color: $cursor;
+      color: $font-color;
       &::first-line {
-        color: $light_gray;
+        color: $font-color;
       }
     }
   }
 
   /* reset element-ui css */
   .login-container {
+    background-image: url('../../assets/image/login/background_2.png'), url('../../assets/image/login/background_1.jpg');
+    background-color: none;
+    background-repeat: no-repeat, no-repeat;
+    background-position:20% 40%, center bottom;
+    background-size: 42%, cover;
     .el-input {
       display: inline-block;
       height: 47px;
-      width: 85%;
+      width: 75%;
       input {
         background: transparent;
         border: 0px;
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        color: $font-color !important;
         height: 47px;
-        caret-color: $cursor;
+        caret-color: #000;
         &:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
+          -webkit-text-fill-color: $font-color !important;
         }
       }
     }
+    .el-form-item__content{
+      line-height: 0;
+      border-bottom: 1px solid $light_gray;
+      background: $cursor;
+      margin-bottom: 10px;
+    }
     .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
-      color: #454545;
+      color: $font-color;
     }
   }
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg:#fff;
+$dark_gray:#00a0e9;
+$light_gray:#000;
 
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  // text-align: center;
   .login-form {
     position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
+    top: 22%;
+    right: 20%;
+    width: 320px;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    background:#fff;
+    border-radius: 6px;
   }
   .tips {
     font-size: 14px;
@@ -212,24 +210,20 @@ $light_gray:#eee;
   }
   .title-container {
     position: relative;
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 5px;
-      right: 0px;
+    padding:10px 20px;
+    text-align: center;
+    margin-bottom: 25px;
+    img{
+      width: auto;
+      height:auto;
+      max-width:100%;
+      max-height:100%;
     }
   }
   .show-pwd {
     position: absolute;
     right: 10px;
-    top: 7px;
+    top: 26px;
     font-size: 16px;
     color: $dark_gray;
     cursor: pointer;
@@ -239,6 +233,18 @@ $light_gray:#eee;
     position: absolute;
     right: 35px;
     bottom: 28px;
+  }
+  .LoginBtn{
+    position: relative;
+    left: 50%;
+    margin-left: -30%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width:60%;
+    height:50px;
+    border-radius: 40px;
+    text-align: center;
+    background: $dark_gray;
   }
 }
 </style>

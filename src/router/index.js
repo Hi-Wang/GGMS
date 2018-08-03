@@ -19,7 +19,7 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('view/dashboard/index'),
       name: '首页',
-      meta: { title: '首页', icon: 'iconfont icon-chongwuroudian', noCache: true }
+      meta: { title: '首页', icon: 'iconfont icon-chongwugou', noCache: true }
     }]
   }
 ]
@@ -35,33 +35,52 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/icon',
+    path: '/supplier',
     component: Layout,
-    children: [{
-      path: 'index',
-      component: () => import('view/svg-icons/index'),
-      name: 'icon',
-      meta: { title: '图标', icon: 'iconfont icon-chongwuroudian', noCache: true }
-    }]
-  },
-  {
-    path: '/icon',
-    component: Layout,
-    name: 'iconss',
     meta: {
-      title: '拷贝图标',
+      title: '供应商',
       icon: 'iconfont icon-chongwuroudian'
     },
     children: [{
-      path: 'index',
-      component: () => import('view/svg-icons/index'),
-      name: 'icon',
-      meta: { title: '图标1', icon: 'iconfont icon-chongwugou', noCache: true }
+      path: 'Manage',
+      component: () => import('view/supplier/supplierManage/supplierManage'),
+      name: 'supplierManage',
+      meta: { title: '供应商管理', icon: 'iconfont icon-chongwugou', noCache: true }
+    }]
+  },
+  {
+    path: '/pro',
+    component: Layout,
+    name: 'iconss',
+    redirect: 'noredirect',
+    meta: {
+      title: '商品',
+      icon: 'iconfont icon-chongwuroudian'
+    },
+    children: [{
+      path: 'index1',
+      component: () => import('view/pro/allPro/allPro'),
+      name: 'icon1',
+      meta: { title: '所有商品', icon: 'iconfont icon-chongwugou', noCache: true }
     },{
-      path: 'index',
-      component: () => import('view/svg-icons/index'),
-      name: 'icon',
-      meta: { title: '图标2', icon: 'iconfont icon-chongwuroudian', noCache: true }
+      path: 'index2',
+      component: () => import('view/pro/supplierPro/supplierPro'),
+      name: 'icon2',
+      meta: { title: '供应商商品', icon: 'iconfont icon-chongwuroudian', noCache: true }
+    }]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    meta: {
+      title: '订单',
+      icon: 'iconfont icon-chongwuroudian'
+    },
+    children: [{
+      path: 'all',
+      component: () => import('view/order/allOrder/allOrder'),
+      name: 'allOrder',
+      meta: { title: '所有订单', icon: 'iconfont icon-chongwuroudian', noCache: true }
     }]
   },
   { path: '*', redirect: '/404', hidden: true }
