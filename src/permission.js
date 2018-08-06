@@ -1,11 +1,11 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css'// progress bar style
-import { getToken } from 'assets/js/common' // getToken from cookie
+import NProgress from 'nprogress' //进度条
+import 'nprogress/nprogress.css'
+import { getToken } from 'assets/js/common'
 
-NProgress.configure({ showSpinner: false })// NProgress Configuration
+NProgress.configure({ showSpinner: false })
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {

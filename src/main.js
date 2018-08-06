@@ -16,14 +16,14 @@ import $ from 'jquery'
 import vuei18n from 'vue-i18n' 
 import './permission'
 import './mock'
-import * as filters from 'assets/js/filter'
+// import * as filters from 'assets/js/filter'
 
 Vue.use(ElementUI)
 Vue.use(vuei18n)
 
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
+// Object.keys(filters).forEach(key => {
+//   Vue.filter(key, filters[key])
+// })
 
 Vue.config.productionTip = false
 

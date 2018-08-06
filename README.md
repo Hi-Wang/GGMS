@@ -22,17 +22,30 @@ npm run build --report
 ├── build                      // 构建相关  
 ├── config                     // 配置相关
 ├── src                        // 源代码
-│   ├── api                    // 所有请求
+│   ├── api                    // API
+│   │   ├── http.js            // 请求封装
+│   │   └── config.js          // 服务器地址及请求地址
 │   ├── assets                 // 主题 字体等静态资源
+│   │   ├── custom-theme       //
+│   │   ├── fonts              // 字体
+│   │   ├── icons              // icon svg
+│   │   ├── image              // 静态图片
+│   │   ├── js                 // 公用js文件
+│   │   │   ├── common.js      // 公用方法
+│   │   │   ├── dom.js         // dom操作
+│   │   │   ├── permission.js  // 权限管理
+│   │   │   └── select.js      // 公用下拉框值
+│   │   └── style              // 公用样式
 │   ├── components             // 全局公用组件
-│   ├── icons                  // 项目所有 svg icons
+│   ├── directive              // 全局指令
+│   ├── mock                   // 模拟数据
 │   ├── router                 // 路由
 │   ├── store                  // 全局 store管理
 │   ├── styles                 // 全局样式
-│   ├── utils                  // 全局公用方法
-│   ├── views                  // view
+│   ├── view                   // view
 │   ├── App.vue                // 入口页面
-│   └── main.js                // 入口 加载组件 初始化等
+│   ├── main.js                // 入口 加载组件 初始化等
+│   └── permission.js          // 权限管理
 ├── static                     // 第三方不打包资源
 ├── .babelrc                   // babel-loader 配置
 ├── eslintrc.js                // eslint 配置项

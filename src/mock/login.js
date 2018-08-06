@@ -1,4 +1,4 @@
-import { param2Obj } from 'assets/js'
+import { param2Obj } from 'assets/js/common'
 
 const userMap = {
   admin: {
@@ -11,6 +11,13 @@ const userMap = {
   editor: {
     roles: ['editor'],
     token: 'editor',
+    introduction: '我是编辑',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Editor'
+  },
+  wang: {
+    roles: ['wang'],
+    token: 'wang',
     introduction: '我是编辑',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'

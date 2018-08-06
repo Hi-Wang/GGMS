@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import { param2Obj } from 'assets/js'
+import { param2Obj } from 'assets/js/common'
 
 const NameList = []
 const count = 100

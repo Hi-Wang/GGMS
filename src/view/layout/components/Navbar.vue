@@ -6,7 +6,6 @@
 
     <div class="right-menu">
       <error-log class="errLog-container right-menu-item"></error-log>
-
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
           <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -52,7 +51,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        location.reload()
       })
     }
   }

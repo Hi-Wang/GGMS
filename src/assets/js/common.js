@@ -165,7 +165,7 @@ const	getCookie = ( name ) =>{
  * 用户名验证
  */
 const isvalidUsername = (str) => {
-  const valid_map = ['admin', 'editor']
+  const valid_map = ['admin', 'editor', 'wang']
   return valid_map.indexOf(str.trim()) >= 0
 }
 
@@ -209,7 +209,13 @@ const validateAlphabets = (str) => {
   return reg.test(str)
 }
 
-  
+const param2Obj = (url) => {
+  const search = url.split('?')[1]
+  if (!search) {
+    return {}
+  }
+  return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+}
 
   export {
     getToken,
@@ -229,5 +235,6 @@ const validateAlphabets = (str) => {
     validateEmail,
     validateLowerCase,
     validateUpperCase,
-    validateAlphabets
+    validateAlphabets,
+    param2Obj
   }
