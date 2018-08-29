@@ -1,21 +1,21 @@
-'use strict'
+' use strict ';
 
-const utils = require('./utils')
-const webpack = require('webpack')
-const config = require('./config')
-const merge = require('webpack-merge')
-const path = require('path')
-const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const portfinder = require('portfinder')
+const utils = require('./utils');
+const webpack = require('webpack');
+const config = require('./config');
+const merge = require('webpack-merge');
+const path = require('path');
+const baseWebpackConfig = require('./webpack.base.conf');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const portfinder = require('portfinder');
 
-const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
+const HOST = process.env.HOST;
+const PORT = process.env.PORT && Number(process.env.PORT);
 
 function resolve (dir) {
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, '..', dir);
 }
 
 const devWebpackConfig = merge(baseWebpackConfig, {
@@ -62,7 +62,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     historyApiFallback: {
       rewrites: [
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
-      ],
+        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'indexs.html') }
+      ]
     },
     // 启用 webpack 的模块热替换特性
     hot: true,
@@ -103,7 +104,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+      chunks: ['manifest', 'vendor', 'app']
+    }),
+    // 生产html文件
+    new HtmlWebpackPlugin({
+      filename: 'indexs.html',
+      template: 'indexs.html',
+      inject: true,
+      chunks: ['manifest', 'vendor', 'indexs']
     }),
     // 复制静态文件
     new CopyWebpackPlugin([
@@ -114,32 +123,32 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       }
     ])
   ]
-})
+});
 
-module.exports = new Promise((resolve, reject) => {
+module.exports = new Promise( (resolve, reject) => {
 
-  portfinder.basePort = process.env.PORT || config.dev.port
+  portfinder.basePort = process.env.PORT || config.dev.port;
   portfinder.getPort((err, port) => {
     if (err) {
-      reject(err)
+      reject(err);
     } else {
       // 发布一个新的端口
-      process.env.PORT = port
+      process.env.PORT = port;
       // 新的端口添加到devServer中
-      devWebpackConfig.devServer.port = port
+      devWebpackConfig.devServer.port = port;
 
       // 添加 FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
-            messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
+            messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]
           },
           onErrors: config.dev.notifyOnErrors
             ? utils.createNotifierCallback()
-            : undefined
+           : undefined
         })
-      )
-      resolve(devWebpackConfig)
+      );
+      resolve(devWebpackConfig);
     }
-  })
-})
+  });
+});

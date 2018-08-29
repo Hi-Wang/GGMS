@@ -42,14 +42,14 @@
 
 
 <script>
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
+import PanelGroup from './components/PanelGroup';
+import LineChart from './components/LineChart';
+import RaddarChart from './components/RaddarChart';
+import PieChart from './components/PieChart';
+import BarChart from './components/BarChart';
+import TransactionTable from './components/TransactionTable';
+import TodoList from './components/TodoList';
+import BoxCard from './components/BoxCard';
 
 const lineChartData = {
   newVisitis: {
@@ -68,7 +68,7 @@ const lineChartData = {
     expectedData: [130, 140, 141, 142, 145, 150, 160],
     actualData: [120, 82, 91, 154, 162, 140, 130]
   }
-}
+};
 
 export default {
   name: 'dashboard-admin',
@@ -85,14 +85,14 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis
-    }
+    };
   },
   methods: {
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      this.lineChartData = lineChartData[type];
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -1,15 +1,15 @@
 <template>
-    <div class="allPro-container">
+    <div class="supplierPro-container">
         所有商品
     </div>
 </template>
 <script>
 export default {
     
-}
+};
 </script>
 <style>
-.allPro-container {
+.supplierPro-container {
     margin: 10px 20px 0;
     overflow: hidden;
 }

@@ -26,13 +26,10 @@ npm run build --report
 │   │   ├── http.js            // 请求封装
 │   │   └── config.js          // 服务器地址及请求地址
 │   ├── assets                 // 主题 字体等静态资源
-│   │   ├── custom-theme       //
 │   │   ├── fonts              // 字体
-│   │   ├── icons              // icon svg
 │   │   ├── image              // 静态图片
 │   │   ├── js                 // 公用js文件
 │   │   │   ├── common.js      // 公用方法
-│   │   │   ├── dom.js         // dom操作
 │   │   │   ├── permission.js  // 权限管理
 │   │   │   └── select.js      // 公用下拉框值
 │   │   └── style              // 公用样式
@@ -41,10 +38,11 @@ npm run build --report
 │   ├── mock                   // 模拟数据
 │   ├── router                 // 路由
 │   ├── store                  // 全局 store管理
-│   ├── styles                 // 全局样式
 │   ├── view                   // view
-│   ├── App.vue                // 入口页面
-│   ├── main.js                // 入口 加载组件 初始化等
+│   ├── App.vue                // 入口页面1
+│   ├── indexs.vue             // 入口页面2
+│   ├── indexs_main.js         // 入口文件2
+│   ├── main.js                // 入口文件1
 │   └── permission.js          // 权限管理
 ├── static                     // 第三方不打包资源
 ├── .babelrc                   // babel-loader 配置
@@ -55,6 +53,5 @@ npm run build --report
 └── package.json               // package.json
 
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 

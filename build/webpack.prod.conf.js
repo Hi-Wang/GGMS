@@ -1,21 +1,21 @@
-'use strict'
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin') // npm i --save-dev html-webpack-plugin@next
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+' use strict ';
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 // 一个优化'压缩CSS的WebPack插件
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const utils = require('./utils')
-const config = require('./config')
-const baseWebpackConfig = require('./webpack.base.conf')
+const utils = require('./utils');
+const config = require('./config');
+const baseWebpackConfig = require('./webpack.base.conf');
 
 function resolve (dir) {
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, '..', dir);
 }
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -58,6 +58,29 @@ const webpackConfig = merge(baseWebpackConfig, {
   // 此选项控制是否以及如何生成source-map。cheap-module-eval-source-map is faster for development
   devtool: config.build.devtool,
   optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          chunks: 'initial' // 只打包初始时依赖的第三方
+        },
+        elementUI: {
+          name: 'chunk-elementUI', // 单独将 elementUI 拆包
+          priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
+          test: /[\\/]node_modules[\\/]element-ui[\\/]/
+        },
+        commons: {
+          name: 'chunk-comomns',
+          test: resolve('src/components'), // 可自定义拓展你的规则
+          minChunks: 3, // 最小公用次数
+          priority: 5,
+          reuseExistingChunk: true
+        }
+      }
+    },
     minimizer: [
       new UglifyJsPlugin({
         parallel: true,
@@ -70,6 +93,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': config.dev.env
+    }),
     // css 提取
     new MiniCssExtractPlugin({
       filename: utils.assetsPath('css/[name].[hash].css'),
@@ -93,7 +119,20 @@ const webpackConfig = merge(baseWebpackConfig, {
         collapseWhitespace: true, // 折叠空白区域
         removeAttributeQuotes: true // 尽可能删除属性周围的引号
       },
-      chunksSortMode: 'dependency' // 允许控制chunk的排序在插入到HTML之前
+      chunksSortMode: 'dependency', // 允许控制chunk的排序在插入到HTML之前
+      chunks: ['manifest', 'vendor', 'app']
+    }),
+    new HtmlWebpackPlugin({
+      filename: config.build.indexs,
+      template: resolve('indexs.html'),
+      inject: true, // 允许注入打包文件
+      minify: {
+        removeComments: true, // 删除注释
+        collapseWhitespace: true, // 折叠空白区域
+        removeAttributeQuotes: true // 尽可能删除属性周围的引号
+      },
+      chunksSortMode: 'dependency', // 允许控制chunk的排序在插入到HTML之前
+      chunks: ['manifest', 'vendor', 'indexs']
     }),
     // 该插件会根据模块的相对路径生成一个四位数的hash作为模块id, 建议用于生产环境。
     new webpack.HashedModuleIdsPlugin(),
@@ -118,7 +157,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 })
 
 if (config.build.productionGzip) {
-  const CompressionWebpackPlugin = require('compression-webpack-plugin')
+  const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
@@ -132,12 +171,12 @@ if (config.build.productionGzip) {
       threshold: 10240,
       minRatio: 0.8
     })
-  )
+  );
 }
 
 if (config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
-module.exports = webpackConfig
+module.exports = webpackConfig;

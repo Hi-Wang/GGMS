@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from 'components/Breadcrumb'
-import Hamburger from 'components/Hamburger'
-import ErrorLog from 'components/ErrorLog'
+import { mapGetters } from 'vuex';
+import Breadcrumb from 'components/Breadcrumb';
+import Hamburger from 'components/Hamburger';
+import ErrorLog from 'components/ErrorLog';
 
 export default {
   components: {
@@ -47,15 +47,15 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
+      this.$store.dispatch('toggleSideBar');
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()
-      })
+        location.reload();
+      });
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -100,7 +100,6 @@ export default {
       margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
         position: relative;
         .user-avatar {
           width: 40px;

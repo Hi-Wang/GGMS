@@ -1,23 +1,39 @@
+/**
+ * 基本配置
+ */ 
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const config = require('./config');
 const utils = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 
-function resolve(dir) {
+function resolve (dir) {
   // path.join() 方法使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。
   // path.join('/foo', 'bar', 'baz/asdf')
   // 返回: '/foo/bar/baz/asdf'
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, '..', dir);
 }
+
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('src'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+});
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: './src/main.js',
+    indexs: './src/indexs_main.js'
   },
   output: {
-    path: resolve('dist'),
+    path: config.build.assetsRoot,
+    // path: resolve('dist'),
     filename: '[name].js',
     publicPath: isProduction ? config.build.assetsPublicPath : config.dev.assetsPublicPath
   },
@@ -38,6 +54,7 @@ module.exports = {
   },
   module: {
     rules: [
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -49,12 +66,21 @@ module.exports = {
         }
       },
       {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
         test: /\.js$/,
         use: isProduction ? [
           {
             loader: 'cache-loader',
             options: {
-              cacheDirectory: resolve('cache-loader'),
+              cacheDirectory: resolve('cache-loader')
             }
           },
           'babel-loader'
@@ -93,7 +119,7 @@ module.exports = {
         options: {
           symbolId: 'icon-[name]'
         }
-      },
+      }
     ]
   },
   plugins: [

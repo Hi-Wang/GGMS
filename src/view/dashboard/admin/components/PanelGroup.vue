@@ -3,7 +3,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <i class="iconfont card-panel-icon icon-huiwulipin"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Visits</div>
@@ -14,7 +14,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <i class="iconfont card-panel-icon icon-chongwugou"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Messages</div>
@@ -25,7 +25,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <i class="iconfont card-panel-icon icon-renyuanshebei"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Purchases</div>
@@ -36,7 +36,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shoppingCard">
-          <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
+          <i class="iconfont card-panel-icon icon-huiyichengshi"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Shoppings</div>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
+import CountTo from 'vue-count-to';
 
 export default {
   components: {
@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+      this.$emit('handleSetLineChartData', type);
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -109,7 +109,7 @@ export default {
     }
     .card-panel-icon-wrapper {
       float: left;
-      margin: 14px 0 0 14px;
+      margin: 12px 0 0 12px;
       padding: 16px;
       transition: all 0.38s ease-out;
       border-radius: 6px;

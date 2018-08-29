@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SidebarItem from './SidebarItem'
+import { mapGetters } from 'vuex';
+import SidebarItem from './SidebarItem';
 
 export default {
   components: { SidebarItem },
-  created(){
-    console.log(this.permission_routers)
+  created() {
+    // console.log(this.permission_routers);
   },
   computed: {
     ...mapGetters([
@@ -29,8 +29,8 @@ export default {
       'sidebar'
     ]),
     isCollapse() {
-      return !this.sidebar.opened
+      return !this.sidebar.opened;
     }
   }
-}
+};
 </script>

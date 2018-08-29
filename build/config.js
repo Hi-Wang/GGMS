@@ -4,7 +4,7 @@ module.exports = {
   dev: {
     assetsSubDirectory: 'static', // 静态文件目录
     assetsPublicPath: '/', // 相对文件路径
-    proxyTable: {},   //代理配置
+    proxyTable: {},
     host: 'localhost',
     port: '8001',
     autoOpenBrowser: true, // 是否自动打开浏览器
@@ -15,11 +15,12 @@ module.exports = {
     // showEslintErrorsInOverlay: false, // eslint浏览器错误提示遮罩层
     devtool: 'cheap-module-eval-source-map', // Source Maps
     cssSourceMap: true, // css Source Maps
-    cacheBusting: false, // vue debugg 提示
+    cacheBusting: 'false' // vue debugg 提示
   },
   build: {
     // html模板
     index: path.resolve(__dirname, '../dist/index.html'),
+    indexs: path.resolve(__dirname, '../dist/indexs.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),

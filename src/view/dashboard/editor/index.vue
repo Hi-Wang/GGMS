@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import PanThumb from 'components/PanThumb'
+import { mapGetters } from 'vuex';
+import PanThumb from 'components/PanThumb';
 
 export default {
   name: 'dashboard-editor',
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
-    }
+    };
   },
   computed: {
     ...mapGetters([
@@ -34,7 +34,7 @@ export default {
       'roles'
     ])
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

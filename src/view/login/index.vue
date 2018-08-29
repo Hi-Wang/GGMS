@@ -30,33 +30,28 @@
 </template>
 
 <script>
-import { isvalidUsername } from 'assets/js/common'
-import SvgIcon from 'components/SvgIcon'
-import { mapGetters, mapMutations } from 'vuex'
-
-// ...mapMutations([]) 可以在组件中提交Mutaitions
-// ...mapActions([]) 可以在组件中分发actions
+import { isvalidUsername } from 'assets/js/common';
+import { mapGetters } from 'vuex';
 
 export default {
   components: { 
-    SvgIcon
-    },
+  },
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('Please enter the correct user name'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码必须6位数以上'))
+        callback(new Error('密码必须6位数以上'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loginForm: {
         username: 'admin',
@@ -67,49 +62,49 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
-      loading: false,
-    }
+      loading: false
+    };
   },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          //actions 通过store.dispatch方法触发
+          this.loading = true;
+          /* actions 通过store.dispatch方法触发 */
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
+            this.loading = false;
+            this.$router.push({ path: '/' });
           }).catch(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log('error submit!!');
+          return false;
         }
-      })
+      });
     },
     afterQRScan() {
     }
   },
   computed: {
     ...mapGetters({
-      Lang: 'language' //可以给getter去别的名字
+      Lang: 'language' /* 可以给getter去别的名字 */
     })
   },
   created() {
-    console.log(this.Lang)
-    console.log(this.$store.state.token)  //访问状态值
+    console.log(this.Lang);
+    console.log(this.$store.state.token); /* //访问状态值 */ 
   },
   destroyed() {
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -151,6 +146,7 @@ export default {
         height: 47px;
         caret-color: #000;
         &:-webkit-autofill {
+          box-shadow: 0 0 0px 1000px $bg inset !important;
           -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
           -webkit-text-fill-color: $font-color !important;
         }

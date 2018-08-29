@@ -30,7 +30,7 @@ export default {
       default: '150px'
     }
   }
-}
+};
 </script>
 
 <style scoped>
